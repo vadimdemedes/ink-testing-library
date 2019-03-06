@@ -43,7 +43,7 @@ render(<MyApp/>);
 
 This function returns an object, which contains the following methods and properties.
 
-#### lastFrame
+#### lastFrame()
 
 Type: `function`
 
@@ -86,7 +86,7 @@ const {rerender} = render(<OldApp/>);
 rerender(<NewApp/>);
 ```
 
-#### unmount
+#### unmount()
 
 Type: `function`
 
@@ -101,7 +101,7 @@ unmount();
 
 Type: `object`
 
-##### write
+##### write()
 
 Type: `function`
 
