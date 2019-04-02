@@ -38,7 +38,7 @@ const createRender = realRender => tree => {
 	const stdout = createStdout();
 	const stdin = createStdin();
 
-	const instance = render(tree, {
+	const instance = realRender(tree, {
 		stdout,
 		stdin,
 		debug: true,
