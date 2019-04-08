@@ -23,11 +23,14 @@ const createStdout = () => {
 
 const createStdin = () => {
 	const stdin = new EventEmitter();
+
 	stdin.setEncoding = () => {};
 	stdin.setRawMode = () => {};
 	stdin.resume = () => {};
 	stdin.pause = () => {};
+
 	stdin.write = data => stdin.emit('data', data);
+	stdin.keypress = name => stdin.emit('keypress', '', {name});
 
 	return stdin;
 };
@@ -51,7 +54,8 @@ exports.render = tree => {
 		rerender: instance.rerender,
 		unmount: instance.unmount,
 		stdin: {
-			write: stdin.write
+			write: stdin.write,
+			keypress: stdin.keypress
 		},
 		frames: stdout.frames,
 		lastFrame: stdout.lastFrame

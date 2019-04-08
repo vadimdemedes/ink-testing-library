@@ -92,3 +92,42 @@ test('write to stdin', t => {
 
 	t.is(lastFrame(), 'Hello World');
 });
+
+test('send keypress to stdin', t => {
+	class Test extends React.Component {
+		constructor() {
+			super();
+
+			this.state = {
+				lastKeyPressed: ''
+			};
+		}
+
+		render() {
+			return <Text>{this.state.lastKeyPressed}</Text>;
+		}
+
+		componentDidMount() {
+			this.props.setRawMode(true);
+			this.props.stdin.on('keypress', (ch, key) => {
+				this.setState({
+					lastKeyPressed: key.name
+				});
+			});
+		}
+	}
+
+	const {stdin, lastFrame} = render((
+		<StdinContext.Consumer>
+			{({stdin, setRawMode}) => (
+				<Test stdin={stdin} setRawMode={setRawMode}/>
+			)}
+		</StdinContext.Consumer>
+	));
+
+	t.is(lastFrame(), '');
+
+	stdin.keypress('escape');
+
+	t.is(lastFrame(), 'escape');
+});
