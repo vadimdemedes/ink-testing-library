@@ -135,9 +135,9 @@ const {stdin} = render(tree);
 stdin.write('hello');
 ```
 
-### createRender()
+### createRender(render)
 
-A `createRender` function is also exported to allow you to mock Ink's render function and replace it with the one from this library when using testing libraries such as Jest. This is useful for more integration style tests as it allows you to assert what was rendered without direct access to the return value of `render()`.
+A `createRender` function is also exported can be used to mock Ink's render function and replace it with the one from this library when using testing libraries such as Jest. This is useful for more integration style tests as it allows you to assert what was rendered without direct access to the return value of `render()`.
 
 e.g. 
 
