@@ -135,6 +135,40 @@ const {stdin} = render(tree);
 stdin.write('hello');
 ```
 
+### createRender()
+
+A `createRender` function is also exported to allow you to mock Ink's render function and replace it with the one from this library when using testing libraries such as Jest. This is useful for more integration style tests as it allows you to assert what was rendered without direct access to the return value of `render()`.
+
+e.g. 
+
+When using Jest creating a file named `__mocks__/tin.js` in the same folder containing your `node_modules` will replace Ink's render function for all of your tests.
+
+```jsx
+import { createRender } from "ink-testing-library";
+
+const ink = jest.requireActual("ink");
+
+module.exports = {
+  ...ink,
+  render: jest.fn(createRender(ink.render))
+};
+
+```
+
+```jsx
+import React from "react";
+import { render } from "ink";
+
+import prog from "main"
+
+it("shows the config", () => {
+  prog.parse("config show");
+  
+  render.mock.results[0].value.lastFrame() // Output from the first render call
+});
+```
+
+This is nessesary because under the hood Ink Testing Library uses Ink's real `render()` function. Attempting to mock `ink.render()` while using ITL will cause ITL's `render()` function to use the newly mocked `ink.render()`.
 
 ## License
 
