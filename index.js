@@ -28,6 +28,7 @@ const createStdin = () => {
 	stdin.resume = () => {};
 	stdin.pause = () => {};
 	stdin.write = data => stdin.emit('data', data);
+	stdin.isTTY = true;
 
 	return stdin;
 };
