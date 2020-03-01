@@ -35,11 +35,11 @@ const createStdin = () => {
 
 const instances = [];
 
-exports.render = tree => {
+const createRender = realRender => tree => {
 	const stdout = createStdout();
 	const stdin = createStdin();
 
-	const instance = render(tree, {
+	const instance = realRender(tree, {
 		stdout,
 		stdin,
 		debug: true,
@@ -58,6 +58,9 @@ exports.render = tree => {
 		lastFrame: stdout.lastFrame
 	};
 };
+
+exports.render = createRender(render);
+exports.createRender = createRender;
 
 exports.cleanup = () => {
 	for (const instance of instances) {
