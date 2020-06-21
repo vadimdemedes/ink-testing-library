@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
-import test from 'ava';
-import {Text, StdinContext} from 'ink';
-import {render} from '.';
+const React = require('react');
+const test = require('ava');
+const {Text, useStdin, useStderr} = require('ink');
+const delay = require('delay');
+const {render} = require('.');
 
 test('render a single frame', t => {
 	const Test = () => <Text>Hello World</Text>;
@@ -54,41 +55,49 @@ test('unmount', t => {
 	t.true(didUnmount);
 });
 
-test('write to stdin', t => {
-	class Test extends React.Component {
-		constructor() {
-			super();
+test('write to stdin', async t => {
+	const Test = () => {
+		const [input, setInput] = React.useState('');
+		const {stdin, setRawMode} = useStdin();
 
-			this.state = {
-				input: ''
+		React.useEffect(() => {
+			const handleData = data => {
+				setInput(data);
 			};
-		}
 
-		render() {
-			return <Text>{this.state.input}</Text>;
-		}
+			setRawMode(true);
+			stdin.on('data', handleData);
 
-		componentDidMount() {
-			this.props.setRawMode(true);
-			this.props.stdin.on('data', data => {
-				this.setState({
-					input: data
-				});
-			});
-		}
-	}
+			return () => {
+				setRawMode(false);
+				stdin.off('data', handleData);
+			};
+		}, [stdin, setRawMode]);
 
-	const {stdin, lastFrame} = render((
-		<StdinContext.Consumer>
-			{({stdin, setRawMode}) => (
-				<Test stdin={stdin} setRawMode={setRawMode}/>
-			)}
-		</StdinContext.Consumer>
-	));
+		return <Text>{input}</Text>;
+	};
 
+	const {stdin, lastFrame} = render(<Test/>);
 	t.is(lastFrame(), '');
-
+	await delay(100);
 	stdin.write('Hello World');
-
+	await delay(100);
 	t.is(lastFrame(), 'Hello World');
+});
+
+test('write to stderr', async t => {
+	const Test = () => {
+		const {write} = useStderr();
+
+		React.useEffect(() => {
+			write('Hello World');
+		}, [write]);
+
+		return <Text>Output</Text>;
+	};
+
+	const {stderr, lastFrame} = render(<Test/>);
+	t.is(lastFrame(), 'Output');
+	await delay(100);
+	t.is(stderr.lastFrame(), 'Hello World');
 });
