@@ -42,7 +42,15 @@ This function returns an object, which contains the following methods and proper
 
 #### lastFrame()
 
+Type: `function`
+
+Shortcut to [`stdout.lastFrame`](#lastframe-1).
+
 #### frames
+
+Type: `array`
+
+Shortcut to [`stdout.frames`](#frames-1).
 
 #### rerender(tree)
 
@@ -136,10 +144,10 @@ Type: `object`
 
 Type: `function`
 
-Same as `lastFrame` in `stdout`, but for stderr stream.
+Same as [`lastFrame`](#lastframe-1) in `stdout`, but for stderr stream.
 
 ##### frames
 
 Type: `array`
 
-Same as `frames` in `stdout`, but for stderr stream.
+Same as [`frames`](#frames-1) in `stdout`, but for stderr stream.
