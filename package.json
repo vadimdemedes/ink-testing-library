@@ -9,39 +9,51 @@
 		"email": "vdemedes@gmail.com",
 		"url": "github.com/vadimdemedes/ink-testing-library"
 	},
+	"main": "build",
+	"types": "build/index.d.ts",
 	"engines": {
-		"node": ">=8"
+		"node": ">=10"
 	},
 	"scripts": {
-		"test": "xo && ava && tsd"
+		"prepare": "tsc",
+		"build": "tsc",
+		"test": "tsc && xo && ava"
 	},
-	"types": "index.d.ts",
 	"files": [
-		"index.d.ts",
-		"index.js"
+		"build"
 	],
 	"keywords": [
 		"ink",
 		"cli",
 		"test"
 	],
+	"dependencies": {
+		"@types/node": "^14.0.13",
+		"@types/react": "^16.9.38"
+	},
 	"devDependencies": {
+		"@ava/babel": "^1.0.1",
 		"@babel/preset-react": "^7.0.0",
-		"@types/react": "^16.9.17",
-		"ava": "^1.3.1",
+		"@sindresorhus/tsconfig": "^0.7.0",
+		"ava": "^3.9.0",
+		"delay": "^4.3.0",
 		"eslint-config-xo-react": "^0.19.0",
+		"eslint-plugin-ava": "^10.3.1",
 		"eslint-plugin-react": "^7.12.4",
 		"eslint-plugin-react-hooks": "^1.4.0",
-		"ink": "^2.0.3",
+		"ink": "^3.0.0-1",
 		"react": "^16.8.4",
-		"tsd": "^0.11.0",
-		"xo": "^0.24.0"
+		"typescript": "^3.9.5",
+		"xo": "^0.32.0"
 	},
-	"babel": {
-		"presets": [
-			"@ava/stage-4",
-			"@babel/preset-react"
-		]
+	"ava": {
+		"babel": {
+			"testOptions": {
+				"presets": [
+					"@babel/preset-react"
+				]
+			}
+		}
 	},
 	"xo": {
 		"extends": "xo-react"
