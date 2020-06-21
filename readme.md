@@ -144,10 +144,10 @@ Type: `object`
 
 Type: `function`
 
-Same as [`lastFrame`](#lastframe-1) in `stdout`, but for stderr stream.
+Same as [`lastFrame`](#lastframe-1) in [`stdout`](#stdout), but for stderr stream.
 
 ##### frames
 
 Type: `array`
 
-Same as [`frames`](#frames-1) in `stdout`, but for stderr stream.
+Same as [`frames`](#frames-1) in [`stdout`](#stdout), but for stderr stream.
