@@ -1,4 +1,4 @@
-# ink-testing-library [![Build Status](https://travis-ci.org/vadimdemedes/ink-testing-library.svg?branch=master)](https://travis-ci.org/vadimdemedes/ink-testing-library)
+# ink-testing-library ![test](https://github.com/vadimdemedes/ink-testing-library/workflows/test/badge.svg)
 
 > Utilities for testing [Ink](https://github.com/vadimdemedes/ink) apps
 
