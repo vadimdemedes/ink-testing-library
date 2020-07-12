@@ -17,7 +17,7 @@
 	"scripts": {
 		"prepare": "tsc",
 		"build": "tsc",
-		"test": "tsc && xo && ava"
+		"test": "tsc && xo && ava && jest"
 	},
 	"files": [
 		"build"
@@ -36,26 +36,41 @@
 		"@babel/preset-react": "^7.0.0",
 		"@sindresorhus/tsconfig": "^0.7.0",
 		"ava": "^3.9.0",
+		"babel-jest": "^26.1.0",
 		"delay": "^4.3.0",
 		"eslint-config-xo-react": "^0.19.0",
 		"eslint-plugin-ava": "^10.3.1",
 		"eslint-plugin-react": "^7.12.4",
 		"eslint-plugin-react-hooks": "^1.4.0",
 		"ink": "^3.0.0-1",
+		"jest": "^26.1.0",
 		"react": "^16.8.4",
 		"typescript": "^3.9.5",
 		"xo": "^0.32.0"
 	},
 	"ava": {
-		"babel": {
-			"testOptions": {
-				"presets": [
-					"@babel/preset-react"
-				]
-			}
-		}
+		"files": [
+			"test.js"
+		],
+		"babel": true
+	},
+	"jest": {
+		"testMatch": [
+			"**/jest.test.js"
+		]
 	},
 	"xo": {
-		"extends": "xo-react"
+		"extends": "xo-react",
+		"overrides": [
+			{
+				"files": "jest.test.js",
+				"env": "jest"
+			}
+		]
+	},
+	"babel": {
+		"presets": [
+			"@babel/preset-react"
+		]
 	}
 }
