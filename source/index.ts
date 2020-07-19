@@ -82,7 +82,8 @@ export const render = (tree: ReactElement): Instance => {
 		stderr: stderr as any,
 		stdin: stdin as any,
 		debug: true,
-		exitOnCtrlC: false
+		exitOnCtrlC: false,
+		patchConsole: false
 	});
 
 	instances.push(instance);
