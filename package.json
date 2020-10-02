@@ -27,14 +27,13 @@
 		"cli",
 		"test"
 	],
-	"dependencies": {
-		"@types/node": "^14.0.13",
-		"@types/react": "^16.9.38"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"@ava/babel": "^1.0.1",
 		"@babel/preset-react": "^7.0.0",
 		"@sindresorhus/tsconfig": "^0.7.0",
+		"@types/node": "^14.0.13",
+		"@types/react": "^16.9.38",
 		"ava": "^3.9.0",
 		"delay": "^4.3.0",
 		"eslint-config-xo-react": "^0.19.0",
@@ -45,6 +44,14 @@
 		"react": "^16.8.4",
 		"typescript": "^3.9.5",
 		"xo": "^0.32.0"
+	},
+	"peerDependencies": {
+		"@types/react": ">=16.8.0"
+	},
+	"peerDependenciesMeta": {
+		"@types/react": {
+			"optional": true
+		}
 	},
 	"ava": {
 		"babel": {
