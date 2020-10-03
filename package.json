@@ -27,7 +27,6 @@
 		"cli",
 		"test"
 	],
-	"dependencies": {},
 	"devDependencies": {
 		"@ava/babel": "^1.0.1",
 		"@babel/preset-react": "^7.0.0",
