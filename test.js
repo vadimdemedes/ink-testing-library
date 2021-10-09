@@ -26,7 +26,7 @@ test('render multiple frames', t => {
 	t.deepEqual(frames, ['Count: 0', 'Count: 1']);
 });
 
-test('unmount', t => {
+test('unmount class component', t => {
 	let didMount = false;
 	let didUnmount = false;
 
@@ -52,6 +52,32 @@ test('unmount', t => {
 
 	unmount();
 
+	t.true(didUnmount);
+});
+
+test('unmount function component', t => {
+	let didMount = false;
+	let didUnmount = false;
+
+	const Test = () => {
+		React.useLayoutEffect(() => {
+			didMount = true;
+
+			return () => {
+				didUnmount = true;
+			};
+		}, []);
+
+		return <Text>Hello World</Text>;
+	};
+
+	const {lastFrame, unmount} = render(<Test/>);
+
+	t.is(lastFrame(), 'Hello World');
+	t.true(didMount);
+	t.false(didUnmount);
+
+	unmount();
 	t.true(didUnmount);
 });
 
