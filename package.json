@@ -39,6 +39,7 @@
 		"eslint-config-xo-react": "^0.27.0",
 		"eslint-plugin-react": "^7.32.2",
 		"eslint-plugin-react-hooks": "^4.6.0",
+		"ink": "^4.0.0",
 		"prettier": "^2.0.4",
 		"react": "^18.0.0",
 		"ts-node": "^10.9.1",
@@ -66,8 +67,5 @@
 		"extends": "xo-react",
 		"prettier": true
 	},
-	"prettier": "@vdemedes/prettier-config",
-	"dependencies": {
-		"ink": "github:vadimdemedes/ink"
-	}
+	"prettier": "@vdemedes/prettier-config"
 }
