@@ -1,9 +1,12 @@
 {
 	"extends": "@sindresorhus/tsconfig",
 	"compilerOptions": {
-		"esModuleInterop": true,
 		"outDir": "build",
 		"sourceMap": true
 	},
-	"include": ["source"]
+	"include": ["source"],
+	"ts-node": {
+		"transpileOnly": true,
+		"files": true
+	}
 }

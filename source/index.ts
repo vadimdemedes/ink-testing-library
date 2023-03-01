@@ -1,4 +1,4 @@
-import {EventEmitter} from 'events';
+import {EventEmitter} from 'node:events';
 import {render as inkRender} from 'ink';
 import type {Instance as InkInstance} from 'ink';
 import type {ReactElement} from 'react';
@@ -16,9 +16,7 @@ class Stdout extends EventEmitter {
 		this._lastFrame = frame;
 	};
 
-	lastFrame = () => {
-		return this._lastFrame;
-	};
+	lastFrame = () => this._lastFrame;
 }
 
 class Stderr extends EventEmitter {
@@ -30,12 +28,11 @@ class Stderr extends EventEmitter {
 		this._lastFrame = frame;
 	};
 
-	lastFrame = () => {
-		return this._lastFrame;
-	};
+	lastFrame = () => this._lastFrame;
 }
 
 class Stdin extends EventEmitter {
+	// eslint-disable-next-line @typescript-eslint/naming-convention
 	isTTY = true;
 
 	write = (data: string) => {
@@ -59,7 +56,7 @@ class Stdin extends EventEmitter {
 	}
 }
 
-interface Instance {
+type Instance = {
 	rerender: (tree: ReactElement) => void;
 	unmount: () => void;
 	cleanup: () => void;
@@ -68,7 +65,7 @@ interface Instance {
 	stdin: Stdin;
 	frames: string[];
 	lastFrame: () => string | undefined;
-}
+};
 
 const instances: InkInstance[] = [];
 
@@ -78,8 +75,11 @@ export const render = (tree: ReactElement): Instance => {
 	const stdin = new Stdin();
 
 	const instance = inkRender(tree, {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		stdout: stdout as any,
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		stderr: stderr as any,
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		stdin: stdin as any,
 		debug: true,
 		exitOnCtrlC: false,
