@@ -15,7 +15,5 @@ jobs:
         with:
           node-version: ${{ matrix.node_version }}
       - run: npm install --global npm@latest
-      - run: npm install --ignore-scripts
-      - run: npm ls
-      - run: npm run build
+      - run: npm install
       - run: npm test
