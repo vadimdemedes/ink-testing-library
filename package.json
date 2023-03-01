@@ -41,7 +41,7 @@
 		"eslint-plugin-ava": "^10.3.1",
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-react": "^7.32.2",
-		"ink": "^3.2.0",
+		"ink": "amitdahan/ink#built/master",
 		"prettier": "^2.0.4",
 		"react": "^18.0.0",
 		"ts-node": "10.9.1",
