@@ -36,15 +36,15 @@ test('unmount class component', t => {
 	let didUnmount = false;
 
 	class Test extends React.Component {
-		render() {
+		override render() {
 			return <Text>Hello World</Text>;
 		}
 
-		componentDidMount() {
+		override componentDidMount() {
 			didMount = true;
 		}
 
-		componentWillUnmount() {
+		override componentWillUnmount() {
 			didUnmount = true;
 		}
 	}
@@ -92,7 +92,7 @@ test('write to stdin', async t => {
 		const {stdin, setRawMode} = useStdin();
 
 		React.useEffect(() => {
-			const handleData = data => {
+			const handleData = (data: string) => {
 				setInput(data);
 			};
 

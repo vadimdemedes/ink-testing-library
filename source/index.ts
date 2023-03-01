@@ -75,12 +75,12 @@ export const render = (tree: ReactElement): Instance => {
 	const stdin = new Stdin();
 
 	const instance = inkRender(tree, {
-		// @ts-expect-error - mock stdout
-		stdout,
-		// @ts-expect-error - mock stderr
-		stderr,
-		// @ts-expect-error - mock stdin
-		stdin,
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+		stdout: stdout as any,
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+		stderr: stderr as any,
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+		stdin: stdin as any,
 		debug: true,
 		exitOnCtrlC: false,
 		patchConsole: false
