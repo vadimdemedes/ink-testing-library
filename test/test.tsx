@@ -1,26 +1,31 @@
-/* eslint-disable react/prop-types */
-const React = require('react');
-const test = require('ava');
-const {Text, useStdin, useStderr} = require('ink');
-const delay = require('delay');
-const {render} = require('.');
+import React from 'react';
+import test from 'ava';
+import {Text, useStdin, useStderr} from 'ink';
+import delay from 'delay';
+import {render} from '../source/index.js';
 
 test('render a single frame', t => {
-	const Test = () => <Text>Hello World</Text>;
-	const {frames, lastFrame} = render(<Test/>);
+	function Test() {
+		return <Text>Hello World</Text>;
+	}
+
+	const {frames, lastFrame} = render(<Test />);
 
 	t.is(lastFrame(), 'Hello World');
 	t.deepEqual(frames, ['Hello World']);
 });
 
 test('render multiple frames', t => {
-	const Counter = ({count}) => <Text>Count: {count}</Text>;
-	const {frames, lastFrame, rerender} = render(<Counter count={0}/>);
+	function Counter({count}: {count: number}) {
+		return <Text>Count: {count}</Text>;
+	}
+
+	const {frames, lastFrame, rerender} = render(<Counter count={0} />);
 
 	t.is(lastFrame(), 'Count: 0');
 	t.deepEqual(frames, ['Count: 0']);
 
-	rerender(<Counter count={1}/>);
+	rerender(<Counter count={1} />);
 
 	t.is(lastFrame(), 'Count: 1');
 	t.deepEqual(frames, ['Count: 0', 'Count: 1']);
@@ -44,7 +49,7 @@ test('unmount class component', t => {
 		}
 	}
 
-	const {lastFrame, unmount} = render(<Test/>);
+	const {lastFrame, unmount} = render(<Test />);
 
 	t.is(lastFrame(), 'Hello World');
 	t.true(didMount);
@@ -59,7 +64,7 @@ test('unmount function component', t => {
 	let didMount = false;
 	let didUnmount = false;
 
-	const Test = () => {
+	function Test() {
 		React.useLayoutEffect(() => {
 			didMount = true;
 
@@ -69,9 +74,9 @@ test('unmount function component', t => {
 		}, []);
 
 		return <Text>Hello World</Text>;
-	};
+	}
 
-	const {lastFrame, unmount} = render(<Test/>);
+	const {lastFrame, unmount} = render(<Test />);
 
 	t.is(lastFrame(), 'Hello World');
 	t.true(didMount);
@@ -82,7 +87,7 @@ test('unmount function component', t => {
 });
 
 test('write to stdin', async t => {
-	const Test = () => {
+	function Test() {
 		const [input, setInput] = React.useState('');
 		const {stdin, setRawMode} = useStdin();
 
@@ -101,9 +106,9 @@ test('write to stdin', async t => {
 		}, [stdin, setRawMode]);
 
 		return <Text>{input}</Text>;
-	};
+	}
 
-	const {stdin, lastFrame} = render(<Test/>);
+	const {stdin, lastFrame} = render(<Test />);
 	t.is(lastFrame(), '');
 	await delay(100);
 	stdin.write('Hello World');
@@ -112,7 +117,7 @@ test('write to stdin', async t => {
 });
 
 test('write to stderr', async t => {
-	const Test = () => {
+	function Test() {
 		const {write} = useStderr();
 
 		React.useEffect(() => {
@@ -120,9 +125,9 @@ test('write to stderr', async t => {
 		}, [write]);
 
 		return <Text>Output</Text>;
-	};
+	}
 
-	const {stderr, lastFrame} = render(<Test/>);
+	const {stderr, lastFrame} = render(<Test />);
 	t.is(lastFrame(), 'Output');
 	await delay(100);
 	t.is(stderr.lastFrame(), 'Hello World');
