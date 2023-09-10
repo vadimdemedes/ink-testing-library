@@ -34,9 +34,16 @@ class Stderr extends EventEmitter {
 class Stdin extends EventEmitter {
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	isTTY = true;
+	data: string | null = null;
+	constructor(options: {isTTY?: boolean} = {}) {
+		super();
+		this.isTTY = options.isTTY ?? true;
+	}
 
 	write = (data: string) => {
-		this.emit('data', data);
+		this.data = data;
+		this.emit('readable');
+		// this.emit('data', data);
 	};
 
 	setEncoding() {
@@ -54,6 +61,22 @@ class Stdin extends EventEmitter {
 	pause() {
 		// Do nothing
 	}
+
+	ref() {
+		// Do nothing
+	}
+
+	unref() {
+		// Do nothing
+	}
+
+	read: () => string | null = () => {
+		const data = this.data;
+
+		this.data = null;
+
+		return data;
+	};
 }
 
 type Instance = {
