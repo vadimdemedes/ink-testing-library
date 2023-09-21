@@ -15,6 +15,21 @@ test('render a single frame', t => {
 	t.deepEqual(frames, ['Hello World']);
 });
 
+test('should control WriteStream column', t => {
+	function Test() {
+		return <Text>12345678901234567890</Text>;
+	}
+
+	const {frames, lastFrame} = render(<Test />);
+
+	t.is(lastFrame(), '12345678901234567890');
+	t.deepEqual(frames, ['12345678901234567890']);
+
+	const {frames: shortFrames, lastFrame: lastShortFrame} = render(<Test />, {stdout: {columns: 10}});
+	t.not(lastShortFrame(), '12345678901234567890');
+	t.notDeepEqual(shortFrames, '12345678901234567890');
+});
+
 test('render multiple frames', t => {
 	function Counter({count}: {count: number}) {
 		return <Text>Count: {count}</Text>;
