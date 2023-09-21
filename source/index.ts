@@ -1,11 +1,18 @@
 import {EventEmitter} from 'node:events';
 import {render as inkRender} from 'ink';
-import type {Instance as InkInstance} from 'ink';
+import type {Instance as InkInstance } from 'ink';
 import type {ReactElement} from 'react';
 
 class Stdout extends EventEmitter {
+	private _columns: number;
+
+	constructor(options: {columns?: number} = {}){
+		super()
+		this._columns = options.columns || 100;
+	}
+
 	get columns() {
-		return 100;
+		return this._columns;
 	}
 
 	readonly frames: string[] = [];
@@ -42,8 +49,7 @@ class Stdin extends EventEmitter {
 
 	write = (data: string) => {
 		this.data = data;
-		this.emit('readable');
-		// this.emit('data', data);
+		this.emit('data', data);
 	};
 
 	setEncoding() {
@@ -92,8 +98,12 @@ type Instance = {
 
 const instances: InkInstance[] = [];
 
-export const render = (tree: ReactElement): Instance => {
-	const stdout = new Stdout();
+type RenderOptions = {
+	stdout?: { columns?: number }
+}
+
+export const render = (tree: ReactElement, options: RenderOptions = {}): Instance => {
+	const stdout = new Stdout(options?.stdout);
 	const stderr = new Stderr();
 	const stdin = new Stdin();
 
