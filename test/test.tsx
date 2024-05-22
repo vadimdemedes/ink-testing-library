@@ -16,7 +16,7 @@ test('render a single frame', t => {
 });
 
 test('render multiple frames', t => {
-	function Counter({count}: {count: number}) {
+	function Counter({count}: {readonly count: number}) {
 		return <Text>Count: {count}</Text>;
 	}
 

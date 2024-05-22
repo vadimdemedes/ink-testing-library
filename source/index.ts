@@ -1,6 +1,5 @@
 import {EventEmitter} from 'node:events';
-import {render as inkRender} from 'ink';
-import type {Instance as InkInstance} from 'ink';
+import {render as inkRender, type Instance as InkInstance} from 'ink';
 import type {ReactElement} from 'react';
 
 class Stdout extends EventEmitter {
@@ -34,7 +33,7 @@ class Stderr extends EventEmitter {
 class Stdin extends EventEmitter {
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	isTTY = true;
-	data: string | null = null;
+	data: string | null = null; // eslint-disable-line @typescript-eslint/ban-types
 	constructor(options: {isTTY?: boolean} = {}) {
 		super();
 		this.isTTY = options.isTTY ?? true;
@@ -43,7 +42,7 @@ class Stdin extends EventEmitter {
 	write = (data: string) => {
 		this.data = data;
 		this.emit('readable');
-		// this.emit('data', data);
+		this.emit('data', data);
 	};
 
 	setEncoding() {
@@ -70,11 +69,10 @@ class Stdin extends EventEmitter {
 		// Do nothing
 	}
 
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	read: () => string | null = () => {
-		const data = this.data;
-
+		const {data} = this;
 		this.data = null;
-
 		return data;
 	};
 }
@@ -106,7 +104,7 @@ export const render = (tree: ReactElement): Instance => {
 		stdin: stdin as any,
 		debug: true,
 		exitOnCtrlC: false,
-		patchConsole: false
+		patchConsole: false,
 	});
 
 	instances.push(instance);
@@ -119,7 +117,7 @@ export const render = (tree: ReactElement): Instance => {
 		stderr,
 		stdin,
 		frames: stdout.frames,
-		lastFrame: stdout.lastFrame
+		lastFrame: stdout.lastFrame,
 	};
 };
 
