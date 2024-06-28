@@ -78,6 +78,40 @@ const {unmount} = render(<Test/>);
 unmount();
 ```
 
+#### renderHook(hook, options)
+
+Type: `function`
+
+Arguments:
+- `hook` (`function`): Hook to render.
+- `options` (`object`): Options object with the following properties:
+	- `wrapper` (`function`): Wrapper component to wrap the hook with.
+
+Render a hook with an optional wrapper, and return the hook's return value. Works like react-testing-library's `renderHook`.
+
+```jsx
+const useCounter = () => {
+	const [count, setCount] = React.useState(0);
+	return {count, increment: () => setCount(count + 1)};
+};
+
+const {result} = renderHook(() => useCounter());
+```
+
+#### waitFor(condition, timeout, interval)
+
+Type: `function`
+Arguments:
+- `condition` (`function`): Function that throws an error if the condition is not met.
+- `timeout` (`number`): Timeout in milliseconds.
+- `interval` (`number`): Interval in milliseconds.
+
+Wait for a condition to be met. Useful for waiting for side effects. The condition can be jest's `expect` assertion. Works like react-testing-library's `waitFor`.
+
+```jsx
+await waitFor(() => expect(result.current.count).toBe(1));
+```
+
 #### stdin
 
 Type: `object`
