@@ -2,7 +2,7 @@ import React from 'react';
 import test from 'ava';
 import {Text, useStdin, useStderr} from 'ink';
 import delay from 'delay';
-import {render} from '../source/index.js';
+import {render, renderHook, waitFor} from '../source/index.js';
 
 test('render a single frame', t => {
 	function Test() {
@@ -131,4 +131,34 @@ test('write to stderr', async t => {
 	t.is(lastFrame(), 'Output');
 	await delay(100);
 	t.is(stderr.lastFrame(), 'Hello World');
+});
+
+test('render a hook', async t => {
+	const useCount = () => {
+		const [count, setCount] = React.useState(0);
+
+		return {
+			count,
+			increment() {
+				setCount(previousCount => previousCount + 1);
+			},
+		};
+	};
+
+	const {result} = renderHook(() => useCount());
+	await waitFor(() => {
+		if(result.current === undefined) {
+			throw new Error('Result is still undefined');
+		}
+	});
+
+	result.current.increment();
+
+	await waitFor(() => {
+		if(result.current.count !== 1) {
+			throw new Error('Count is not 1');
+		}
+	});
+
+	t.pass();
 });

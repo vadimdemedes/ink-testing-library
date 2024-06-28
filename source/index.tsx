@@ -1,6 +1,6 @@
 import {EventEmitter} from 'node:events';
 import {render as inkRender, type Instance as InkInstance} from 'ink';
-import type {ReactElement} from 'react';
+import React, {useEffect, type ReactElement, act} from 'react';
 
 class Stdout extends EventEmitter {
 	get columns() {
@@ -127,3 +127,89 @@ export const cleanup = () => {
 		instance.cleanup();
 	}
 };
+
+type Hook<T> = () => T;
+
+type RenderHookOptions = {
+	wrapper?: React.ComponentType<any>;
+};
+
+function HookWrapper<T>({
+	hook,
+	setResult,
+}: {
+	readonly hook: Hook<T>;
+	readonly setResult: (result: T) => void;
+}) {
+	const result = hook();
+	useEffect(() => {
+		setResult(result);
+	}, [result, setResult]);
+
+	return null;
+}
+
+export function renderHook<T>(hook: Hook<T>, options: RenderHookOptions = {}) {
+	let hookResult: T;
+	const setResult = (result: T) => {
+		hookResult = result;
+	};
+
+	function TestComponent() {
+		return <HookWrapper hook={hook} setResult={setResult} />;
+	}
+
+	const WrapperComponent = options.wrapper ?? React.Fragment;
+
+	function WrappedComponent() {
+		return (
+			<WrapperComponent>
+				<TestComponent />
+			</WrapperComponent>
+		);
+	}
+
+	const {rerender, unmount} = render(<WrappedComponent />);
+
+	return {
+		result: {
+			get current() {
+				return hookResult;
+			},
+		},
+		rerender() {
+			act(() => {
+				rerender(<WrappedComponent />);
+			});
+		},
+		unmount() {
+			act(() => {
+				unmount();
+			});
+		},
+	};
+}
+
+export async function waitFor(
+	condition: () => void,
+	timeout = 5000,
+	interval = 50,
+): Promise<void> {
+	const startTime = Date.now();
+	return new Promise((resolve, reject) => {
+		const checkCondition = () => {
+			try {
+				condition();
+				resolve();
+			} catch (error) {
+				if (Date.now() - startTime >= timeout) {
+					reject(new Error(`waitFor timed out: ${(error as Error).message}`));
+				} else {
+					setTimeout(checkCondition, interval);
+				}
+			}
+		};
+
+		checkCondition();
+	});
+}
