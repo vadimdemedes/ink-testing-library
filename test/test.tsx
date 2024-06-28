@@ -147,7 +147,7 @@ test('render a hook', async t => {
 
 	const {result} = renderHook(() => useCount());
 	await waitFor(() => {
-		if(result.current === undefined) {
+		if (result.current === undefined) {
 			throw new Error('Result is still undefined');
 		}
 	});
@@ -155,7 +155,7 @@ test('render a hook', async t => {
 	result.current.increment();
 
 	await waitFor(() => {
-		if(result.current.count !== 1) {
+		if (result.current.count !== 1) {
 			throw new Error('Count is not 1');
 		}
 	});
